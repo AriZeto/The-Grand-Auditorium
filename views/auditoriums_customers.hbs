@@ -1,0 +1,246 @@
+{{!-- auditoriums_customers.hbs --}}
+
+<html>
+  <head>
+    <title>The Grand Auditorium - Auditorium Customers</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  </head>
+
+<body>
+  <div class="sidebar">
+    <!-- Hamburger menu -->
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Add your links here -->
+    <a href="/index">Homepage</a>
+    <a href="/films">Films</a>
+    <a href="/customers">Customers</a>
+    <a href="/auditoriums">Auditoriums</a>
+    <a href="/seats">Seats</a>
+    <a href="/auditoriums_customers">Auditoriums_Customers</a>
+  </div>
+
+  <div class="content">
+    <!-- Move the banner div and heading here -->
+    <div class="banner">
+      <h1 class="banner-text">The Grand Auditorium</h1>
+    </div>
+
+        <h1>Auditorium Customers</h1>
+
+{{!-- Create a table --}}
+<table id="auditoriums_customers-table">
+  <thead>
+    {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+  <tbody>
+
+{{!-- For each row, print Auditorium_Customer_id, auditorium_id, and customer_id, in order --}}
+    {{#each data}}
+        <tr data-value={{this.auditorium_customer_id}}>
+    <td>{{this.auditorium_customer_id}}</td>
+    <td>{{this.auditorium_id}}</td>
+    <td>{{this.customer_id}}</td>
+    <td><button onclick="deleteAuditoriumCustomers({{this.auditorium_customer_id}})">Delete</button></td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+  <script src="./js/delete_auditorium_customers.js"></script>
+  </div>
+
+
+<!-- /views/index.hbs -->
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add a New Auditorium Customer</h2>
+<p>To add a new record to the Auditoriums Customers table, please enter the information below and click the 'Submit' button. You will see this be added in real time.</p>
+<form id="add-auditorium-customer-form-ajax">
+  <label for="input-auditorium-id">Auditorium ID:</label>
+  <select name="input-auditorium-id" id="input-auditorium-id">
+        <option value="">Select an Auditorium:</option>
+        {{#each auditoriums}}
+        <option value="{{this.auditorium_id}}">{{this.auditorium_id}} ({{this.room_name}})</option>
+          {{/each}}
+  </select>
+
+  <label for="input-customer-id">Customer ID:</label>
+  <select name="input-customer-id" id="input-customer-id">
+        <option value="">Select a Customer:</option>
+        {{#each customers}}
+        <option value="{{this.customer_id}}">{{this.name}} (Customer ID: {{this.customer_id}})</option>
+          {{/each}}
+  </select>
+  <input type="submit">
+  </form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_auditorium_customer.js"></script>
+
+<h2>Update Auditorium Customer</h2>
+<p>You may update Auditorium Customers here. To do so, utilize the following form by selecting or entering the desired information. After submitting, you will see the information updated in real time.</p>
+<form id="update-auditorium-customer-form-ajax">
+  <label for="auditoriumCustomerSelect">Auditorium Customer ID:</label>
+  <select name="auditoriumCustomerSelect" id="auditoriumCustomerSelect">
+        <option value="">Select an Auditorium Customer:</option>
+        {{#each data}}
+        <option value="{{this.auditorium_customer_id}}">{{this.auditorium_customer_id}}</option>
+          {{/each}}
+  </select>
+
+  <label for="input-auditorium-update">Auditorium ID:</label>
+  <select name="input-auditorium-update" id="input-auditorium-update">
+        <option value="">Select an Auditorium ID:</option>
+        {{#each auditoriums}}
+        <option value="{{this.auditorium_id}}">{{this.auditorium_id}}</option>
+          {{/each}}
+  </select>
+
+  <label for="input-customer-update">Customer ID:</label>
+  <select name="input-customer-update" id="input-customer-update">
+        <option value="">Select a Customer ID:</option>
+        {{#each customers}}
+        <option value="{{this.customer_id}}">{{this.customer_id}}</option>
+          {{/each}}
+  </select>
+  <input type="submit">
+  </form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/update_auditorium_customer.js"></script>
+
+  <!-- CSS section -->
+  <style>
+.banner {
+  background-color: #A4C0D9;
+  padding: 10px;
+  text-align: center;
+}
+
+body {
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+th {
+    background-color: #D9EAD3;
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+}
+
+.sidebar {
+  background-color: transparent; 
+  width: 200px; 
+  position: fixed;
+  top: 10px; 
+  left: 10px; 
+  height: 35px; 
+  padding-top: 30px; 
+  overflow: hidden;
+}
+
+.sidebar.show-links {
+  background-color: #D9EAD3; 
+  height: auto; 
+  overflow: visible;
+}
+
+.sidebar a {
+  display: none;
+  padding: 10px;
+  margin-bottom: 5px; 
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar a:hover {
+  background-color: #A4C0D9;
+}
+
+.content {
+  margin-left: auto; 
+  margin-right:auto;
+  max-width: 800px; 
+}
+
+/* Hamburger menu styles */
+.hamburger {
+  display: block;
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+  padding: 5px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: black;
+  margin-bottom: 5px;
+}
+
+.sidebar.show-links a {
+  display: block;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+footer {
+  background-color: #f5f5f5;
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid #ccc;
+}
+
+footer p {
+  margin: 0;
+}
+
+.content {
+padding-bottom: 60px; 
+}
+  </style>
+
+  <!-- JavaScript section -->
+  <script>
+    // Toggle class to show/hide links
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      document.querySelector('.sidebar').classList.toggle('show-links');
+    });
+  </script>
+
+ <footer>
+
+</footer> 
+</body>
