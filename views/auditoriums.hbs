@@ -1,0 +1,251 @@
+{{!-- auditoriums.hbs --}}
+<html>
+  <head>
+    <title>The Grand Auditorium - Auditoriums</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  </head>
+
+
+<body>
+
+  <div class="sidebar">
+    <!-- Hamburger menu -->
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Add your links here -->
+    <a href="/index">Homepage</a>
+    <a href="/films">Films</a>
+    <a href="/customers">Customers</a>
+    <a href="/auditoriums">Auditoriums</a>
+    <a href="/seats">Seats</a>
+    <a href="/auditoriums_customers">Auditoriums_Customers</a>
+  </div>
+
+  <div class="content">
+    <!-- Move the banner div and heading here -->
+    <div class="banner">
+      <h1 class="banner-text">The Grand Auditorium</h1>
+    </div>
+
+
+    <h1>Auditoriums</h1>
+    
+      {{!-- Auditoriums table --}}
+    <table id="auditoriums-table">
+      <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+          <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+           {{!-- Body section --}}
+        {{!-- <tbody id="auditoriumsTableBody"> --}}
+          <tbody>
+          {{#each data}}
+          <tr data-value={{this.auditorium_id}}>
+                <td>{{this.auditorium_id}}</td>
+                <td>{{this.film_id}}</td>
+                <td>{{this.room_name}}</td>
+                <td>{{this.num_seat}}</td>
+                <td><button onclick="deleteAuditorium({{this.auditorium_id}})">Delete</button></td>
+              </tr>
+          {{/each}}
+        </tbody>
+    </table>
+    <script src="./js/delete_auditorium.js"></script>
+  </div>
+
+  <!-- /views/auditoriums.hbs -->
+
+{{!-- Form to add a record to the table --}}
+<h2>Add a New Auditorium</h2>
+<p>To add a new auditorium, please enter the information below and click the 'Submit' button. You will see this be added in real time.</p>
+<form id="add-auditorium-form-ajax">
+  <label for="input-room-name">Room Name:</label>
+  <input type="text" name="input-room-name" id="input-room-name">
+
+    <!-- Drop Down Menu for Film ID -->    
+    <label for="input-film-id">Film: </label>
+    <select name="input-film-id" id="input-film-id">
+        <option value="">Select a Film</option>
+        {{#each films}}
+        <option value="{{this.film_id}}">(Film ID: {{this.film_id}}) {{this.title}}</option>
+          {{/each}}
+    </select>
+
+    <label for="input-num-seats">Number of Seats: </label>
+    <input type="number" name="input-num-seats" id="input-num-seats">
+
+    <input type="submit">
+</form>
+
+  {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+  <script src="./js/add_auditorium.js"></script>
+
+<!-- Updating Auditoriums Page Entries -->
+<h2>Updating the Auditorium</h2>
+<p>You may update Auditoriums here. To do so, utilize the following form by selecting or entering the desired information. After submitting, you will see the information updated in real time.</p>
+<form id="update-auditoriums-form-ajax">
+
+  <label for="input-name">Auditorium ID: </label>
+  <select name="input-name" id="auditoriumSelect">
+      <option value="test">Select the Auditorium.</option>
+      {{#each data}}
+      <option value="{{this.auditorium_id}}">(id: {{this.auditorium_id}}) {{this.room_name}}</option>
+      {{/each}}
+    </select>
+
+    <label for="input-room-update">Update Room Name:</label>
+    <input type="text" name="input-room-update" id="input-room-update">
+
+    <label for="input-film-update">Film:</label>
+    <select name="input-film-update" id="input-film-update">
+      <option value="test">Select the Film.</option>
+        {{#each films}}
+        <option value="{{this.film_id}}">(Film ID: {{this.film_id}}) {{this.title}}</option>
+          {{/each}}
+    </select>
+    
+    <label for="input-num-update">Number of Seats:</label>
+    <input type="number" name="input-num-update" id="input-num-update">
+
+    <input type="submit">
+</form>
+
+<script src="./js/update_auditoriums.js"></script>
+
+
+  <!-- CSS section -->
+  <style>
+.banner {
+  background-color: #A4C0D9;
+  padding: 10px;
+  text-align: center;
+}
+
+body {
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+table {
+    margin-top: 20px;
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+th {
+    background-color: #D9EAD3;
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+}
+
+.sidebar {
+  background-color: transparent; 
+  width: 200px; 
+  position: fixed;
+  top: 10px; 
+  left: 10px; 
+  height: 35px; 
+  padding-top: 30px; 
+  overflow: hidden;
+}
+
+.sidebar.show-links {
+  background-color: #D9EAD3; 
+  height: auto; 
+  overflow: visible;
+}
+
+.sidebar a {
+  display: none;
+  padding: 10px;
+  margin-bottom: 5px; 
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar a:hover {
+  background-color: #A4C0D9;
+}
+
+.content {
+  margin-left: auto; 
+  margin-right:auto;
+  max-width: 800px; 
+}
+
+/* Hamburger menu styles */
+.hamburger {
+  display: block;
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+  padding: 5px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: black;
+  margin-bottom: 5px;
+}
+
+.sidebar.show-links a {
+  display: block;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+footer {
+  background-color: #f5f5f5;
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid #ccc;
+}
+
+footer p {
+  margin: 0;
+}
+
+.content {
+/* min-height: calc(100vh - 40px); */
+padding-bottom: 60px; 
+}
+  </style>
+
+  <!-- JavaScript section -->
+  <script>
+    // Toggle class to show/hide links
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      document.querySelector('.sidebar').classList.toggle('show-links');
+    });
+  </script>
+
+<footer>
+  
+</footer>
+</body>

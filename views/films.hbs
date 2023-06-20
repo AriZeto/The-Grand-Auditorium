@@ -1,0 +1,329 @@
+{{!-- films.hbs --}}
+<html>
+  <head>
+    <title>The Grand Auditorium - Films</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  </head>
+
+
+<body>
+  <div class="sidebar">
+    <!-- Hamburger menu -->
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Add your links here -->
+    <a href="/index">Homepage</a>
+    <a href="/films">Films</a>
+    <a href="/customers">Customers</a>
+    <a href="/auditoriums">Auditoriums</a>
+    <a href="/seats">Seats</a>
+    <a href="/auditoriums_customers">Auditoriums_Customers</a>
+  </div>
+
+  <div class="content">
+    <!-- Move the banner div and heading here -->
+    <div class="banner">
+      <h1 class="banner-text">The Grand Auditorium</h1>
+    </div>
+
+        <h1>Films</h1>
+
+<!-- Add the search bar -->
+    <div class="search">
+      <input type="text" id="searchInput" placeholder="Search films...">
+      <button id="searchButton">Search</button>
+    </div>
+
+{{!-- Create a table --}}
+<table id="films-table">
+  <thead>
+    {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+  <tbody id="filmsTableBody">  
+  {{#each data}}
+<tr data-value={{this.film_id}}>
+        <td>{{this.film_id}}</td>
+        <td>{{this.title}}</td>
+        <td>{{this.description}}</td>
+        <td>{{this.director}}</td>
+        <td>{{this.studio}}</td>
+        <td>{{this.year}}</td>
+        <td>{{this.runtime}}</td>
+        <td>{{this.showtime}}</td>
+        <td>{{this.price}}</td>
+        <td>{{this.rating}}</td>
+        <td><button onclick="deleteFilm({{this.film_id}})">Delete</button></td>
+      </tr>
+  {{/each}}
+</tbody>
+</table>
+<script src="./js/delete_film.js"></script>
+
+</div>
+
+<!-- /views/index.hbs -->
+
+{{!-- Form to add a record to the table  --}}
+<h2>Add a New Film</h2>
+<p>To add a new film, please enter the information below and click the 'Submit' button. You will see this be added in real time.</p>
+<form id="add-film-form-ajax">
+    <label for="input-title">Title: </label>
+    <input type="text" name="input-title" id="input-title">
+    
+    <label for="input-description">Description: </label>
+    <input type="text" name="input-description" id="input-description">
+
+    <label for="input-director">Director: </label>
+    <input type="text" name="input-director" id="input-director">
+
+    <label for="input-studio">Studio: </label>
+    <input type="text" name="input-studio" id="input-studio">
+
+    <label for="input-year">Year: </label>
+    <input type="number" name="input-year" id="input-year">
+
+    <label for="input-runtime">Runtime: </label>
+    <input type="number" name="input-runtime" id="input-runtime">
+
+    <label for="input-showtime">Showtime: </label>
+    <input type="text" name="input-showtime" id="input-showtime">
+
+    <label for="input-price">Price: </label>
+    <input type="number" name="input-price" id="input-price">
+
+    <label for="input-rating">Rating: </label>
+    <input type="text" name="input-rating" id="input-rating">
+
+    <input type="submit">
+</form>
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_film.js"></script>
+
+<h2>Updating a Film</h2>
+<p>You may update Films here. To do so, utilize the following form by selecting or entering the desired information. After submitting, you will see the information updated in real time.</p>
+<form id="update-film-form-ajax">
+  
+    <label for="input-name">Film Title: </label>
+    <select name="input-name" id="filmSelect">
+      <option value="test">Select a film.</option>
+      {{#each data}}
+      <option value="{{this.film_id}}">{{this.title}}</option>
+      {{/each}}
+    </select>
+    
+    <label for="input-title">Update Title: </label>
+    <input type="text" name="input-title" id="input-title-update">
+
+    <label for="input-description">Description: </label>
+    <input type="text" name="input-description" id="input-description-update">
+
+    <label for="input-director">Director: </label>
+    <input type="text" name="input-director" id="input-director-update">
+
+    <label for="input-studio">Studio: </label>
+    <input type="text" name="input-studio" id="input-studio-update">  
+
+    <label for="input-year">Year: </label>
+    <input type="number" name="input-year" id="input-year-update"> 
+
+    <label for="input-runtime">Runtime: </label>
+    <input type="number" name="input-runtime" id="input-runtime-update">
+
+    <label for="input-showtime">Showtime: </label>
+    <input type="text" name="input-showtime" id="input-showtime-update">
+
+    <label for="input-price">Price: </label>
+    <input type="number" name="input-price" id="input-price-update">
+
+    <label for="input-rating">Rating: </label>
+    <input type="text" name="input-rating" id="input-rating-update">
+
+    <input type="submit">
+
+</form>
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/update_film.js"></script>
+
+  <!-- CSS section -->
+  <style>
+.banner {
+  background-color: #A4C0D9;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+  width: 100%; /* Increased width */
+}
+
+
+body {
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+th {
+    background-color: #D9EAD3;
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+}
+
+.sidebar {
+  background-color: transparent;
+  width: 200px; 
+  position: fixed;
+  top: 10px; 
+  left: 10px; 
+  height: 35px; 
+  padding-top: 30px; 
+  overflow: hidden;
+}
+
+.sidebar.show-links {
+  background-color: #D9EAD3; 
+  height: auto; 
+  overflow: visible;
+}
+
+.sidebar a {
+  display: none;
+  padding: 10px;
+  margin-bottom: 5px; 
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar a:hover {
+  background-color: #A4C0D9;
+}
+
+.content {
+  margin-left: auto; 
+  margin-right: auto;
+  max-width: 960px; 
+  /* min-height: calc(100vh - 40px); */
+  padding-bottom: 60px; 
+}
+
+/* Hamburger menu styles */
+.hamburger {
+  display: block;
+  width: 30px;
+  height: 20px;
+  cursor: pointer;
+  padding: 5px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: black;
+  margin-bottom: 5px;
+}
+
+.sidebar.show-links a {
+  display: block;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.search {
+  margin-bottom: 20px;
+}
+
+.search input[type="text"] {
+  padding: 5px;
+  width: 200px;
+  margin-right: 10px;
+}
+
+.search button {
+  padding: 5px 10px;
+  background-color: #A4C0D9;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+footer {
+  background-color: #f5f5f5;
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid #ccc;
+}
+
+footer p {
+  margin: 0;
+}
+
+  </style>
+
+<!-- JavaScript section -->
+<script>
+  // Toggle class to show/hide links
+  document.querySelector('.hamburger').addEventListener('click', function() {
+    document.querySelector('.sidebar').classList.toggle('show-links');
+  });
+
+  function filterFilms() {
+    // Get the search input value
+    var searchInput = document.getElementById('searchInput').value.toLowerCase();
+
+    // Get the table body element
+    var tableBody = document.getElementById('filmsTableBody');
+
+    // Get all the rows in the table body
+    var rows = tableBody.getElementsByTagName('tr');
+
+    // Loop through each row and hide/show based on the search input
+    for (var i = 0; i < rows.length; i++) {
+      var title = rows[i].getElementsByTagName('td')[1].textContent.toLowerCase();
+
+      if (title.includes(searchInput)) {
+        rows[i].style.display = '';
+      } else {
+        rows[i].style.display = 'none';
+      }
+    }
+  }
+
+  // Attach the filterFilms function to the search button click event
+  document.getElementById('searchButton').addEventListener('click', filterFilms);
+
+  // Attach the filterFilms function to the input event of the search input field
+  document.getElementById('searchInput').addEventListener('input', filterFilms);
+</script>
+
+<footer>
+  
+</footer>
+</body>
